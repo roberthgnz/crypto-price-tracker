@@ -1,0 +1,85 @@
+{
+    "name": "crypto-price-tracker",
+    "version": "0.0.1",
+    "description": "VSCode extension to get cryptocurrency prices",
+    "publisher": "reliutg",
+    "icon": "icon.png",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/roberthgnz/crypto-price-tracker"
+    },
+    "engines": {
+        "vscode": "^1.83.1"
+    },
+    "main": "./out/extension.js",
+    "files": [
+        "out"
+    ],
+    "contributes": {
+        "commands": [
+            {
+                "command": "cryptoPriceTracker.getPrices",
+                "title": "Crypto Price Tracker"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "cryptoPriceTracker.getPrices",
+                    "when": "view == cryptoPriceTracker",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "views": {
+            "explorer": [
+                {
+                    "id": "cryptoPriceTracker",
+                    "name": "Crypto Prices"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Crypto Price Tracker",
+            "properties": {
+                "cryptoPriceTracker.defaultCryptos": {
+                    "type": "array",
+                    "default": [
+                        "bitcoin",
+                        "ethereum",
+                        "cardano",
+                        "dogecoin"
+                    ],
+                    "description": "List of default cryptocurrencies to track"
+                },
+                "cryptoPriceTracker.currency": {
+                    "type": "string",
+                    "default": "usd",
+                    "description": "Reference currency for prices"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile -- --minify",
+        "compile": "esbuild ./src/extension.ts --bundle --outdir=out --external:vscode --format=cjs --platform=node",
+        "watch": "npm run dev -- --sourcemap --watch",
+        "dev": "npm run compile -- --sourcemap",
+        "lint": "eslint --fix src/**.ts",
+        "format": "prettier --write \"src/**.ts\"",
+        "prepublishOnly": "npm run lint",
+        "preversion": "npm run lint",
+        "version": "npm run format && git add -A src",
+        "postversion": "git push && git push --tags"
+    },
+    "dependencies": {
+        "axios": "^1.7.8"
+    },
+    "devDependencies": {
+        "@types/node": "^14.14.37",
+        "@types/vscode": "^1.55.0",
+        "esbuild": "^0.24.0",
+        "typescript": "^4.2.4"
+    }
+}
